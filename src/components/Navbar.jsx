@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import schoolLogo from "../assets/fglogo.jpg"; // <-- make sure this exists inside src/assets/
 
@@ -17,10 +17,9 @@ export default function Navbar() {
 
   return (
     <nav className="bg-yellow-300 shadow-lg fixed w-full z-50">
-      {/* 🔧 Removed max-w-7xl and mx-auto so content spans full width */}
       <div className="flex items-center justify-between px-4 py-3">
         {/* Logo + School Name */}
-        <Link to="/" className="flex items-center space-x-3">
+        <NavLink to="/" className="flex items-center space-x-3">
           <img
             src={schoolLogo}
             alt="School Logo"
@@ -30,7 +29,7 @@ export default function Navbar() {
             Francisco G. Nepomuceno <br className="hidden md:block" /> Memorial
             High School
           </span>
-        </Link>
+        </NavLink>
 
         {/* Mobile menu button */}
         <button
@@ -44,29 +43,39 @@ export default function Navbar() {
         <ul className="hidden md:flex space-x-6 text-blue-600 font-medium">
           {navLinks.map((link) => (
             <li key={link.path}>
-              <Link
+              <NavLink
                 to={link.path}
-                className="inline-block hover:text-blue-900 hover:scale-110 transform transition-transform duration-200"
+                end={link.path === "/"}
+                className={({ isActive }) =>
+                  `inline-block transform transition-transform duration-200 hover:text-blue-900 hover:scale-110 ${
+                    isActive ? "font-bold text-blue-900 underline" : ""
+                  }`
+                }
               >
                 {link.name}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Mobile Nav Menu (only when menuOpen is true) */}
+      {/* Mobile Nav Menu */}
       {menuOpen && (
         <ul className="md:hidden bg-yellow-300 px-4 pb-4 space-y-2 text-blue-700 font-medium">
           {navLinks.map((link) => (
             <li key={link.path}>
-              <Link
+              <NavLink
                 to={link.path}
-                className="inline-block py-2 hover:text-blue-900 hover:scale-110 transform transition-transform duration-200"
-                onClick={() => setMenuOpen(false)} // close menu after click
+                end={link.path === "/"}
+                onClick={() => setMenuOpen(false)} // close menu on click
+                className={({ isActive }) =>
+                  `inline-block py-2 transform transition-transform duration-200 hover:text-blue-900 hover:scale-110 ${
+                    isActive ? "font-bold text-blue-900 underline" : ""
+                  }`
+                }
               >
                 {link.name}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>
